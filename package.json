@@ -1,0 +1,13 @@
+{
+  "name": "cm1-english-games",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fourteen vocabulary and grammar games for CM1 / Grade 4",
+  "scripts": {
+    "test": "node tests/validate.cjs",
+    "build": "node build.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2"
+  }
+}
