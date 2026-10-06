@@ -14,9 +14,14 @@ assert.equal(d.querySelector('.home-heading p').textContent,'Practice your Engli
 assert.deepEqual([...d.querySelectorAll('.section-head h2')].map(x=>x.textContent),['VOCABULARY','GRAMMAR']);
 assert.deepEqual([...d.querySelectorAll('.home-topic h3')].map(x=>x.textContent),['London Landmarks','Family Tree','Prepositions of Place','Subject Pronouns','Object Pronouns','Verb to Be']);
 assert.equal(d.querySelectorAll('.homepage a[href^="#game/"]').length,0);
+assert.equal(d.querySelectorAll('.london-banner svg[role="img"]').length,1);
+assert.equal(d.querySelector('.london-banner').textContent,'');
+assert.equal(d.querySelectorAll('.home-topic .home-icon svg').length,6);
+assert(d.body.classList.contains('home-view'));
+
 const topicLinks=[...d.querySelectorAll('.home-topic')].map(a=>a.getAttribute('href'));
 const gameLinks=[];
-for(const link of topicLinks){w.location.hash=link;api.route();const t=TOPICS.find(t=>link==='#topic/'+t.id);assert(t);const links=[...d.querySelectorAll('.game-list .topic')].map(a=>a.getAttribute('href'));assert.equal(links.length,GAMES.filter(g=>g.topic===t.id).length);assert(d.querySelector('header a[href="#"]'));assert(d.querySelector('a.back[href="#"]'));for(const href of links){assert(GAMES.some(g=>href==='#game/'+g.id));gameLinks.push(href);}}
+for(const link of topicLinks){w.location.hash=link;api.route();const t=TOPICS.find(t=>link==='#topic/'+t.id);assert(t);assert(!d.body.classList.contains('home-view'));const links=[...d.querySelectorAll('.game-list .topic')].map(a=>a.getAttribute('href'));assert.equal(links.length,GAMES.filter(g=>g.topic===t.id).length);assert(d.querySelector('header a[href="#"]'));assert(d.querySelector('a.back[href="#"]'));for(const href of links){assert(GAMES.some(g=>href==='#game/'+g.id));gameLinks.push(href);}}
 assert.equal(new Set(gameLinks).size,14);
 for(const g of GAMES){w.location.hash=gameLinks.find(href=>href==='#game/'+g.id);api.route();assert.equal(d.querySelector('a.back').getAttribute('href'),'#topic/'+g.topic);assert(d.querySelector('header a[href="#"]'));if(g.type==='match'){
 for(let batch=0;batch<3;batch++){const left=[...d.querySelectorAll('[data-side="left"]')];for(const l of left){l.click();d.querySelector('[data-side="right"][data-key="'+l.dataset.key+'"]').click();assert.match(d.querySelector('.feedback').textContent,/Correct!/);}assert.equal(d.querySelector('#next').disabled,false);d.querySelector('#next').click();}
