@@ -9,8 +9,16 @@ const w=dom.window;w.scrollTo=()=>{};w.eval(fs.readFileSync('data.js','utf8')+'\
 const d=w.document,api=w.testAPI;
 assert.equal(d.querySelectorAll('.topic').length,6);
 assert.equal(d.querySelectorAll('.section').length,2);
-for(const t of TOPICS){w.location.hash='topic/'+t.id;api.route();assert.equal(d.querySelectorAll('.game-list .topic').length,GAMES.filter(g=>g.topic===t.id).length);}
-for(const g of GAMES){w.location.hash='game/'+g.id;api.route();if(g.type==='match'){
+assert.equal(d.querySelector('.home-heading h1').textContent,'CM1 English Games');
+assert.equal(d.querySelector('.home-heading p').textContent,'Practice your English and have fun!');
+assert.deepEqual([...d.querySelectorAll('.section-head h2')].map(x=>x.textContent),['VOCABULARY','GRAMMAR']);
+assert.deepEqual([...d.querySelectorAll('.home-topic h3')].map(x=>x.textContent),['London Landmarks','Family Tree','Prepositions of Place','Subject Pronouns','Object Pronouns','Verb to Be']);
+assert.equal(d.querySelectorAll('.homepage a[href^="#game/"]').length,0);
+const topicLinks=[...d.querySelectorAll('.home-topic')].map(a=>a.getAttribute('href'));
+const gameLinks=[];
+for(const link of topicLinks){w.location.hash=link;api.route();const t=TOPICS.find(t=>link==='#topic/'+t.id);assert(t);const links=[...d.querySelectorAll('.game-list .topic')].map(a=>a.getAttribute('href'));assert.equal(links.length,GAMES.filter(g=>g.topic===t.id).length);assert(d.querySelector('header a[href="#"]'));assert(d.querySelector('a.back[href="#"]'));for(const href of links){assert(GAMES.some(g=>href==='#game/'+g.id));gameLinks.push(href);}}
+assert.equal(new Set(gameLinks).size,14);
+for(const g of GAMES){w.location.hash=gameLinks.find(href=>href==='#game/'+g.id);api.route();assert.equal(d.querySelector('a.back').getAttribute('href'),'#topic/'+g.topic);assert(d.querySelector('header a[href="#"]'));if(g.type==='match'){
 for(let batch=0;batch<3;batch++){const left=[...d.querySelectorAll('[data-side="left"]')];for(const l of left){l.click();d.querySelector('[data-side="right"][data-key="'+l.dataset.key+'"]').click();assert.match(d.querySelector('.feedback').textContent,/Correct!/);}assert.equal(d.querySelector('#next').disabled,false);d.querySelector('#next').click();}
 }else{
 for(let n=0;n<g.questions.length;n++){const q=api.getState().questions[n],buttons=[...d.querySelectorAll('[data-answer]')];if(n===0){const wrong=buttons.find(b=>b.dataset.answer!==q.answer);wrong.click();assert.match(d.querySelector('.feedback').textContent,/Try again!/);assert.equal(d.querySelector('#next').disabled,true);}buttons.find(b=>b.dataset.answer===q.answer).click();assert.match(d.querySelector('.feedback').textContent,/Correct!/);assert.equal(d.querySelector('#next').disabled,false);d.querySelector('#next').click();}
