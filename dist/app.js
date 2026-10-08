@@ -60,5 +60,5 @@ function bindCompletionForm(){
   form.elements.student_name.oninput=()=>form.elements.student_name.setCustomValidity('');
 }
 
-function route(){const [kind,id]=location.hash.slice(1).split('/');document.body.classList.toggle('home-view',!['topic','game'].includes(kind));const t=TOPICS.find(t=>t.id===id),g=GAMES.find(g=>g.id===id);if(kind==='topic'&&t)topicPage(t);else if(kind==='game'&&g)start(g);else home();window.scrollTo(0,0);document.title=(kind==='game'&&g?g.title+' · ':kind==='topic'&&t?t.title+' · ':'')+'CM1 English Games';}
+function route(){const [kind,id]=location.hash.slice(1).split('/');document.body.classList.toggle('home-view',!['topic','game'].includes(kind));const t=TOPICS.find(t=>t.id===id),g=GAMES.find(g=>g.id===id);document.body.classList.toggle('topic-view',kind==='topic'&&!!t);if(kind==='topic'&&t)topicPage(t);else if(kind==='game'&&g)start(g);else home();window.scrollTo(0,0);document.title=(kind==='game'&&g?g.title+' · ':kind==='topic'&&t?t.title+' · ':'')+'CM1 English Games';}
 window.addEventListener('hashchange',route);route();

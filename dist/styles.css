@@ -61,3 +61,14 @@ body.home-view{
 .completion-form input,.completion-form select{display:block;width:100%;min-height:48px;border:2px solid #abc5d8;border-radius:10px;padding:10px;font:inherit;color:var(--navy);background:white}
 .completion-form button{margin-top:20px;width:100%}
 @media(max-width:600px){.result{padding:22px}.completion-form{padding:18px}.game-list .topic{min-height:180px}}
+
+/* Compact topic layout brings exercise cards into view sooner. */
+.topic-view header{height:64px}
+.topic-view main{padding-top:18px;padding-bottom:36px}
+.topic-view .back{margin-bottom:10px}
+.topic-view .page-head h1{margin:10px 0 14px;font-size:34px}
+.topic-view .learn{margin-top:12px;padding:14px 20px;line-height:1.6}
+.topic-view .exercise-heading{margin:20px 0 12px}
+.topic-view .game-list{margin-top:0}
+.topic-view .lesson-rules li{margin:6px 0}
+@media(max-width:600px){.topic-view header{height:60px}.topic-view main{padding-top:14px}.topic-view .page-head h1{font-size:30px}.topic-view .learn{padding:12px 16px}.topic-view .exercise-heading{font-size:24px;margin-top:18px}}
