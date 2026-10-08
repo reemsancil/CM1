@@ -14,13 +14,13 @@ screen. Back links return to the current topic.
 - Subject Pronouns: Replace the Subject, Pronoun Challenge.
 - Object Pronouns: Replace the Object, Subject or Object Pronoun?
 - Verb to Be: Am / Is / Are, Make It Negative, Make a Question.
-- Prepositions of Place: Where is it?, London Map Challenge.
+- Prepositions of Place: Where is it?, Choose the Correct Sentence.
 
 - Capitalization and Punctuation (Grammar): Capitalize and Punctuate, Full Stop or Question Mark?.
 
-There are 179 questions and matches in total. All 12 requested London names
+There are 178 questions and matches in total. All 12 requested London names
 appear in each landmark activity. Matching presents four pairs at a time.
-The London map is fictional. Its front/back direction is marked.
+Both preposition exercises use ball-and-box pictures, with no map or directions activity.
 
 ## Scoring
 

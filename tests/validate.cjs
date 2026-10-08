@@ -4,6 +4,9 @@ const fs=require('node:fs');
 const {LANDMARKS,TOPICS,GAMES}=require('../data.js');
 assert.equal(TOPICS.length,7);assert.equal(GAMES.length,16);assert.equal(LANDMARKS.length,12);
 for(const g of GAMES){assert(g.questions.length>=8,g.id);for(const q of g.questions){assert(q.prompt&&q.answer);if(g.type!=='match')assert(q.choices.includes(q.answer),g.id+': '+q.prompt);assert.equal(new Set(q.choices).size,q.choices.length);}}
+const placeTopic=TOPICS.find(t=>t.id==='place');assert(!placeTopic.learn.includes('near'));
+const placeGames=GAMES.filter(g=>g.topic==='place');assert.equal(placeGames.length,2);assert(placeGames.some(g=>g.id==='position-sentences'));assert(!GAMES.some(g=>g.id==='map'));
+for(const g of placeGames){for(const q of g.questions){assert(q.visual.startsWith('position:'));assert(![q.prompt,q.answer,...q.choices].some(text=>/\bnear\b|\bmap\b/i.test(text)));}}
 const {JSDOM}=require('jsdom');
 const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://cm1.example/',runScripts:'outside-only'});
 const w=dom.window;w.scrollTo=()=>{};w.eval(fs.readFileSync('data.js','utf8')+'\n'+fs.readFileSync('app.js','utf8')+'\nwindow.testAPI={GAMES,TOPICS,getState:()=>state,route,shuffle};');
