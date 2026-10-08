@@ -72,3 +72,8 @@ body.home-view{
 .topic-view .game-list{margin-top:0}
 .topic-view .lesson-rules li{margin:6px 0}
 @media(max-width:600px){.topic-view header{height:60px}.topic-view main{padding-top:14px}.topic-view .page-head h1{font-size:30px}.topic-view .learn{padding:12px 16px}.topic-view .exercise-heading{font-size:24px;margin-top:18px}}
+
+/* Home is a prominent, easy-to-tap button on every student screen. */
+header .home-link,.back[href="#"],.result .secondary[href="#"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border:2px solid #216456;border-radius:12px;background:#216456;color:#fff;font-size:18px;font-weight:700;line-height:1.2;white-space:nowrap}
+header .home-link:hover,.back[href="#"]:hover,.result .secondary[href="#"]:hover{background:#174b40;border-color:#174b40}
+@media(max-width:600px){header{gap:10px}header .home-link{margin-left:0;padding:9px 12px}header .grade{font-size:8px;letter-spacing:.5px;padding:7px 8px}}
