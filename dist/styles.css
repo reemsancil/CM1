@@ -37,3 +37,43 @@ body.home-view{
 @media(min-width:701px) and (max-width:1000px){.homepage .section{padding:20px}.homepage .home-topic{padding:16px;gap:12px}.homepage .home-topic h3{font-size:20px}.home-icon{width:40px;height:40px;flex-basis:40px}}
 @media(max-width:700px){.homepage .sections{grid-template-columns:1fr;gap:24px}.homepage .section{padding:22px}.home-heading p{font-size:18px}.london-banner{height:150px;margin-bottom:24px;border-radius:20px}.homepage .home-topic{min-height:88px;padding:18px;gap:12px}.homepage .home-topic h3{font-size:20px}.home-icon{width:40px;height:40px;flex-basis:40px}}
 @media(prefers-reduced-motion:reduce){.homepage .home-topic{transition:none}.homepage .home-topic:hover{transform:none}}
+
+.teacher-name{font-weight:700;color:#7b4299!important;margin-bottom:8px!important}
+.exercise-heading{margin:32px 0 8px;font-size:26px}
+.game-list .topic{border:2px solid #9dcced;background:#edf7ff;padding:24px;min-height:210px}
+.game-list .topic:nth-child(3n+2){border-color:#dab2e9;background:#f8effe}
+.game-list .topic:nth-child(3n){border-color:#edc87d;background:#fff7e4}
+.exercise-number{display:inline-block;border-radius:20px;background:#fff;padding:8px 12px;font-size:13px;font-weight:700;color:#31577b}
+.game-list .topic h3{font-size:22px;line-height:1.3}
+.game-list .topic p{font-size:15px;color:#415c70}
+.topic-bottom{gap:12px;flex-wrap:wrap;font-size:13px}
+.start-label{font-weight:700}
+.question-card .instruction{font-size:15px;line-height:1.6;letter-spacing:.3px;text-transform:none;color:#415c70;background:#edf7ff;padding:14px;border-radius:12px}
+.choices .choice:nth-child(3n+1){background:#eef7ff}
+.choices .choice:nth-child(3n+2){background:#fbf1ff}
+.choices .choice:nth-child(3n){background:#fff8e7}
+.choices .choice.correct{background:#e9f6eb}
+.choices .choice.wrong{background:#fff0e9}
+.lesson-rules{padding-left:24px;margin:0}.lesson-rules li{margin:10px 0}
+.completion-form{max-width:440px;margin:28px auto;text-align:left;padding:24px;border-radius:18px;background:#eef7ff;border:1px solid #bad7ec}
+.completion-form h3{margin-top:0}.completion-form p{font-size:14px;line-height:1.5}
+.completion-form label{display:block;margin:16px 0 8px;font-weight:700}
+.completion-form input,.completion-form select{display:block;width:100%;min-height:48px;border:2px solid #abc5d8;border-radius:10px;padding:10px;font:inherit;color:var(--navy);background:white}
+.completion-form button{margin-top:20px;width:100%}
+@media(max-width:600px){.result{padding:22px}.completion-form{padding:18px}.game-list .topic{min-height:180px}}
+
+/* Compact topic layout brings exercise cards into view sooner. */
+.topic-view header{height:64px}
+.topic-view main{padding-top:18px;padding-bottom:36px}
+.topic-view .back{margin-bottom:10px}
+.topic-view .page-head h1{margin:10px 0 14px;font-size:34px}
+.topic-view .learn{margin-top:12px;padding:14px 20px;line-height:1.6}
+.topic-view .exercise-heading{margin:20px 0 12px}
+.topic-view .game-list{margin-top:0}
+.topic-view .lesson-rules li{margin:6px 0}
+@media(max-width:600px){.topic-view header{height:60px}.topic-view main{padding-top:14px}.topic-view .page-head h1{font-size:30px}.topic-view .learn{padding:12px 16px}.topic-view .exercise-heading{font-size:24px;margin-top:18px}}
+
+/* Home is a prominent, easy-to-tap button on every student screen. */
+header .home-link,.back[href="#"],.result .secondary[href="#"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border:2px solid #216456;border-radius:12px;background:#216456;color:#fff;font-size:18px;font-weight:700;line-height:1.2;white-space:nowrap}
+header .home-link:hover,.back[href="#"]:hover,.result .secondary[href="#"]:hover{background:#174b40;border-color:#174b40}
+@media(max-width:600px){header{gap:10px}header .home-link{margin-left:0;padding:9px 12px}header .grade{font-size:8px;letter-spacing:.5px;padding:7px 8px}}
