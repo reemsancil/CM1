@@ -13,6 +13,7 @@ const LANDMARKS = [
 ['Big Ben','I am the nickname of the Great Bell.','The famous Great Bell.','clock']
 ];
 const TOPICS=[
+{id:'capitalization',title:'Capitalization and Punctuation',section:'Grammar',icon:'A?',desc:'Use capital letters, full stops and question marks.',learn:`<ul class="lesson-rules"><li><strong>Start a sentence with a capital letter.</strong> The dog ran away.</li><li><strong>Capitalize proper nouns.</strong> Alice, Paris, Microsoft.</li><li><strong>Capitalize days and months.</strong> Monday, October.</li><li><strong>Capitalize languages and nationalities.</strong> English, Spanish, French.</li><li><strong>Capitalize historical events and periods.</strong> World War II.</li><li><strong>Capitalize the main words in book, movie and song titles.</strong> Harry Potter and the Sorcerer's Stone.</li><li><strong>Capitalize a person's title before a name.</strong> President Lincoln, Doctor Smith, Aunt Lisa.</li><li><strong>Always capitalize I.</strong> I like to read.</li><li><strong>End a statement with a full stop (.).</strong> I like to play soccer.</li><li><strong>End a question with a question mark (?).</strong> What is your favorite color?</li></ul>`},
 {id:'london',title:'London Landmarks',section:'Vocabulary',icon:'♜',desc:'Take a little trip around London.',learn:LANDMARKS.map(x=>x[0]).join(' · ')},
 {id:'family',title:'Family Tree',section:'Vocabulary',icon:'♧',desc:'Meet the family. Find the connections.',learn:'mother · father · parents · son · daughter · brother · sister · husband · wife · grandfather · grandmother · grandparents · uncle · aunt · cousin'},
 {id:'subject',title:'Subject Pronouns',section:'Grammar',icon:'We',desc:'I, you, he… who is it?',learn:'I · you · he · she · it · we · they'},
@@ -23,7 +24,32 @@ const TOPICS=[
 function Q(prompt,answer,choices,visual){return {prompt,answer,choices,visual};}
 function rows(list,pool){return list.map(([p,a])=>Q(p,a,pool));}
 const SUBJECT=['I','you','he','she','it','we','they'],OBJECT=['me','you','him','her','it','us','them'];
+const SENTENCE_PRACTICE=[
+['maria is from spain and she speaks spanish','Maria is from Spain and she speaks Spanish.'],
+['did you know that canada is very cold in january','Did you know that Canada is very cold in January?'],
+['we are going to france in september','We are going to France in September.'],
+['are you australian or from new zealand','Are you Australian or from New Zealand?'],
+['i will meet my italian friends on saturday','I will meet my Italian friends on Saturday.'],
+['mr. lee teaches us about chinese history','Mr. Lee teaches us about Chinese history.'],
+['my cousin is visiting from brazil in may','My cousin is visiting from Brazil in May.'],
+['i love japanese food','I love Japanese food.'],
+['will david come to the meeting on tuesday','Will David come to the meeting on Tuesday?'],
+['my family and i are traveling to mexico in december','My family and I are traveling to Mexico in December.'],
+['olivia is learning french','Olivia is learning French.'],
+['did you know that the cat in the hat was written by dr. seuss','Did you know that The Cat in the Hat was written by Dr. Seuss?'],
+['i will visit australia in march','I will visit Australia in March.'],
+['we are visiting canada in november','We are visiting Canada in November.'],
+['are you going to the birthday party on friday','Are you going to the birthday party on Friday?'],
+['my friend sophia is visiting from italy in august','My friend Sophia is visiting from Italy in August.'],
+['the olympics will be held in france next july','The Olympics will be held in France next July.'],
+['mr. jones gave us homework today','Mr. Jones gave us homework today.'],
+['we are in september','We are in September.'],
+['we went to the beach with aunt lisa on sunday','We went to the beach with Aunt Lisa on Sunday.']
+];
 const GAMES=[
+{id:'fix-sentence',topic:'capitalization',title:'Capitalize and Punctuate',desc:'Read the sentence. Choose the version with correct capital letters and the correct ending.',questions:SENTENCE_PRACTICE.map(([prompt,answer])=>Q(prompt,answer,[answer,answer[0].toLowerCase()+answer.slice(1),answer.slice(0,-1)+(answer.endsWith('?')?'.':'?')]))},
+{id:'sentence-ending',topic:'capitalization',title:'Full Stop or Question Mark?',desc:'Does the sentence tell you something or ask a question? Choose its ending.',questions:rows([
+['I like to play soccer___','.'],['What is your favorite color___','?'],['The dog is barking___','.'],['Will David come on Tuesday___','?'],['We are in September___','.'],['Are you going to the party on Friday___','?'],['Olivia is learning French___','.'],['Did you know that Canada is cold in January___','?'],['My cousin is visiting in May___','.'],['Is this your English book___','?']],['.','?'])},
 {id:'guess',topic:'london',title:'Guess the Landmark',desc:'Look at the picture. Choose its name.',questions:LANDMARKS.map(x=>Q('Which landmark, person or group is this?',x[0],LANDMARKS.map(l=>l[0]),'landmark:'+x[3]))},
 {id:'who',topic:'london',title:'Who or What Am I?',desc:'Read a clue. Solve the mystery.',questions:LANDMARKS.map(x=>Q('“'+x[1]+'”',x[0],LANDMARKS.map(l=>l[0])))},
 {id:'match',topic:'london',title:'Match the Landmark',desc:'Match each name to its description.',type:'match',questions:LANDMARKS.map(x=>Q(x[0],x[2],[]))},

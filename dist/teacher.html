@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Teacher Results | CM1 Learning Games</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="results.css">
+</head>
+<body>
+<main class="game-page">
+  <a class="home-link" href="index.html">← CM1 Homepage</a>
+  <section class="game-panel" aria-labelledby="teacher-title">
+    <header class="game-header"><h1 id="teacher-title">Teacher Results</h1></header>
+    <div class="teacher-content">
+      <form class="teacher-form" id="teacher-login">
+        <h2>Teacher sign-in</h2>
+        <label for="teacher-email">Email</label>
+        <input id="teacher-email" type="email" autocomplete="username" required>
+        <label for="teacher-password">Password</label>
+        <input id="teacher-password" type="password" autocomplete="current-password" required>
+        <button class="primary-button" type="submit">Sign in</button>
+      </form>
+      <p id="teacher-status" class="teacher-status" role="status" aria-live="polite"></p>
+      <div id="teacher-results" hidden>
+        <p>Scores count answers correct on the first try. Dates below use Riyadh time (UTC+03:00).</p>
+        <div class="teacher-toolbar">
+          <button class="secondary-button" id="refresh-results" type="button">Refresh results</button>
+          <button class="primary-button" id="download-csv" type="button" disabled>Download CSV</button>
+          <button class="secondary-button" id="sign-out" type="button">Sign out</button>
+        </div>
+        <div id="section-results"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="results-api.js"></script>
+<script src="teacher.js"></script>
+</body>
+</html>
+

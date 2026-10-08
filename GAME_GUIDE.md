@@ -16,7 +16,9 @@ screen. Back links return to the current topic.
 - Verb to Be: Am / Is / Are, Make It Negative, Make a Question.
 - Prepositions of Place: Where is it?, London Map Challenge.
 
-There are 149 questions and matches in total. All 12 requested London names
+- Capitalization and Punctuation (Grammar): Capitalize and Punctuate, Full Stop or Question Mark?.
+
+There are 179 questions and matches in total. All 12 requested London names
 appear in each landmark activity. Matching presents four pairs at a time.
 The London map is fictional. Its front/back direction is marked.
 
@@ -37,7 +39,7 @@ then run `npm test` from this directory.
 
 Validation covers all games from start to result, topic navigation, retries,
 first-try scoring, matching, replay, and invalid route fallback. Browser visual
-QA was unavailable in the execution environment.
+QA passed on desktop and mobile in Chromium.
 
 ## Publish with Netlify
 
@@ -47,6 +49,6 @@ QA was unavailable in the execution environment.
    These settings are also provided in `netlify.toml`.
 4. Deploy, then share the Netlify site URL with students.
 
-The website has no runtime dependencies, server, or login requirement.
+Games require no student login. Submitting results requires a network connection to the existing Supabase project; the teacher page requires the existing teacher account. See `CM1-RESULTS-SETUP.md` for the required CM1 section database update.
 Use the Netlify URL as the final student link. No GitHub Pages setup is needed.
 ChatGPT Sites configuration is excluded from this GitHub export.
