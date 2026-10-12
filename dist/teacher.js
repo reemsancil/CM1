@@ -27,7 +27,7 @@
     for (const section of ['CM1 A', 'CM1 D']) {
       const group = rows.filter(row => row.class_section === section);
       const heading = document.createElement('h2');
-      heading.textContent = `${section} (${group.length} submissions)`;
+      heading.textContent = section;
       sections.append(heading);
       if (!group.length) {
         const empty = document.createElement('p');
@@ -35,35 +35,53 @@
         sections.append(empty);
         continue;
       }
-      const wrap = document.createElement('div');
-      wrap.className = 'table-wrap';
-      const table = document.createElement('table');
-      const caption = document.createElement('caption');
-      caption.textContent = `${section} student results`;
-      table.append(caption);
-      const head = document.createElement('thead');
-      const header = document.createElement('tr');
-      for (const label of ['Student name', 'Game', 'Exercise', 'Score', 'Completed (UTC+03:00)']) {
-        const th = document.createElement('th');
-        th.scope = 'col';
-        th.textContent = label;
-        header.append(th);
-      }
-      head.append(header);
-      table.append(head);
-      const body = document.createElement('tbody');
+      const students = new Map();
       for (const row of group) {
-        const tr = document.createElement('tr');
-        for (const value of [row.student_name, row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
-          const td = document.createElement('td');
-          td.textContent = value;
-          tr.append(td);
-        }
-        body.append(tr);
+        if (!students.has(row.student_name)) students.set(row.student_name, []);
+        students.get(row.student_name).push(row);
       }
-      table.append(body);
-      wrap.append(table);
-      sections.append(wrap);
+      const list = document.createElement('ul');
+      list.className = 'student-list';
+      for (const [studentName, attempts] of students) {
+        const item = document.createElement('li');
+        const details = document.createElement('details');
+        details.className = 'student-results';
+        const summary = document.createElement('summary');
+        summary.textContent = studentName;
+        details.append(summary);
+        const wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        const table = document.createElement('table');
+        const caption = document.createElement('caption');
+        caption.textContent = `${studentName} · ${section} results`;
+        table.append(caption);
+        const head = document.createElement('thead');
+        const header = document.createElement('tr');
+        for (const label of ['Game', 'Exercise', 'Score', 'Completed (UTC+03:00)']) {
+          const th = document.createElement('th');
+          th.scope = 'col';
+          th.textContent = label;
+          header.append(th);
+        }
+        head.append(header);
+        table.append(head);
+        const body = document.createElement('tbody');
+        for (const row of attempts) {
+          const tr = document.createElement('tr');
+          for (const value of [row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.append(td);
+          }
+          body.append(tr);
+        }
+        table.append(body);
+        wrap.append(table);
+        details.append(wrap);
+        item.append(details);
+        list.append(item);
+      }
+      sections.append(list);
     }
     download.disabled = !rows.length;
   }
