@@ -21,6 +21,10 @@ window.ResultsAPI = (() => {
   }
   return {
     teacherId,
+    gifts(name,section){return request('/rest/v1/rpc/school_check_gifts',{method:'POST',body:JSON.stringify({p_name:name,p_section:section,p_level:GiftConfig.level})});},
+    async openGift(name,section,id){const rows=await request('/rest/v1/rpc/school_open_gift',{method:'POST',body:JSON.stringify({p_name:name,p_section:section,p_id:id,p_level:GiftConfig.level})});if(!rows?.length)throw new Error('Gift unavailable');return rows[0];},
+    async teacherGifts(token){const all=[];for(let offset=0;;offset+=500){const batch=await request(`/rest/v1/school_certificates?select=*&order=awarded_at.desc,id.asc&limit=500&offset=${offset}`,{},token);all.push(...batch);if(batch.length<500)return all;}},
+    async sendGift(name,section,token){const rows=await request('/rest/v1/rpc/school_send_gift',{method:'POST',body:JSON.stringify({p_name:name,p_section:section,p_level:section.split(' ')[0]})},token);if(!rows?.length)throw new Error('Gift not confirmed');return rows[0];},
     async submit(record) {
       try {
         await request('/rest/v1/student_results', {
@@ -52,4 +56,3 @@ window.ResultsAPI = (() => {
     },
   };
 })();
-
