@@ -28,3 +28,5 @@ th { background: #f0ecff; }
 .student-results table { margin-bottom: 0; }
 
 .all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }
+
+.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}

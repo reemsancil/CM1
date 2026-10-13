@@ -4,7 +4,7 @@
   "private": true,
   "description": "Sixteen vocabulary and grammar games for CM1 / Grade 4",
   "scripts": {
-    "test": "node tests/validate.cjs && node tests/results.cjs",
+    "test": "node tests/validate.cjs && node tests/results.cjs && node tests/gifts.cjs",
     "build": "node build.cjs"
   },
   "devDependencies": {
