@@ -26,3 +26,5 @@ th { background: #f0ecff; }
 .student-results[open] summary { background: #f0ecff; }
 .student-results .table-wrap { padding: 12px; }
 .student-results table { margin-bottom: 0; }
+
+.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }

@@ -48,6 +48,15 @@
         details.className = 'student-results';
         const summary = document.createElement('summary');
         summary.textContent = studentName;
+        const finishedAll = GAMES.length > 0 && GAMES.every(game => attempts.some(row =>
+          row.game === 'CM1 · ' + TOPICS.find(topic => topic.id === game.topic).title &&
+          row.exercise === game.title));
+        if (finishedAll) {
+          const completion = document.createElement('em');
+          completion.className = 'all-games-completed';
+          completion.textContent = 'Completed all games';
+          summary.append(' ', completion);
+        }
         details.append(summary);
         const wrap = document.createElement('div');
         wrap.className = 'table-wrap';
@@ -102,7 +111,7 @@
       if (run !== generation) return;
       rows = loaded.filter(row => ['CM1 A', 'CM1 D'].includes(row.class_section)).sort((a, b) => collator.compare(a.class_section, b.class_section) || collator.compare(a.student_name, b.student_name) || a.completed_at.localeCompare(b.completed_at));
       render();
-      status.textContent = `${rows.length} submissions loaded.`;
+      status.textContent = '';
     } catch (error) {
       if (run !== generation) return;
       if (error.status === 401 || error.status === 403) {
