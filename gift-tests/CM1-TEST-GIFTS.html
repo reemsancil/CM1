@@ -558,9 +558,7 @@ window.TeacherGifts=(()=>{
         details.className = 'student-results';
         const summary = document.createElement('summary');
         summary.textContent = studentName;
-        const finishedAll = GAMES.length > 0 && GAMES.every(game => attempts.some(row =>
-          row.game === 'CM1 · ' + TOPICS.find(topic => topic.id === game.topic).title &&
-          row.exercise === game.title));
+        const finishedAll = UnitProgress.students(attempts)[0]?.eligible;
         if (finishedAll) {
           const completion = document.createElement('em');
           completion.className = 'all-games-completed';
