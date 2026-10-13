@@ -45,6 +45,24 @@ w.history.replaceState(null,'','#'+('game/match').replace(/^#/,''));api.route();
 w.history.replaceState(null,'','#'+('game/not-a-game').replace(/^#/,''));api.route();assert.equal(d.querySelectorAll('.section').length,2);
 w.localStorage.clear();w.history.replaceState(null,'','#'+('game/sentence-ending').replace(/^#/,''));api.route();const punctuationGame=api.getState().game;for(let n=0;n<punctuationGame.questions.length;n++){const q=api.getState().questions[n];d.querySelectorAll('[data-answer]').forEach(b=>{if(b.dataset.answer===q.answer)b.click();});d.querySelector('#next').click();}
 const failingForm=d.querySelector('.completion-form');failingForm.elements.student_name.value='Test';failingForm.elements.class_section.value='CM1 A';let failedRecord;w.ResultsAPI.submit=async record=>{failedRecord=record;throw new Error('Network unavailable')};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.match(d.querySelector('.submission-status').textContent,/could not be confirmed/);assert.equal(failingForm.querySelector('button').disabled,false);assert.equal(failingForm.elements.student_name.disabled,true);let retryRecord;w.ResultsAPI.submit=async record=>{retryRecord=record};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.equal(retryRecord,failedRecord);assert.match(d.querySelector('.submission-status').textContent,/sent to your teacher/);assert.equal(w.localStorage.getItem('cm1-results'),null);
+// Historical scores must restore checks, including a zero score after finishing.
+w.localStorage.setItem('cm1-best',JSON.stringify({[GAMES[0].id]:{score:0,total:GAMES[0].questions.length}}));
+w.history.replaceState(null,'','#topic/'+GAMES[0].topic);api.route();
+assert.equal(d.querySelectorAll('.game-list .is-complete').length,1);
+assert.match(d.querySelector('.is-complete .completion-badge').textContent,/✓ Completed/);
+w.history.replaceState(null,'','#');api.route();
+assert.equal(d.querySelectorAll('.home-topic.is-complete').length,0);
+const history={};for(const g of GAMES.filter(g=>g.topic===GAMES[0].topic))history[g.id]={score:0,total:g.questions.length};
+w.localStorage.setItem('cm1-best',JSON.stringify(history));api.route();
+assert.equal(d.querySelectorAll('.home-topic.is-complete').length,1);
+assert.equal(d.querySelectorAll('.section.is-complete').length,0);
+for(const g of GAMES)history[g.id]={score:1,total:g.questions.length};
+w.localStorage.setItem('cm1-best',JSON.stringify(history));api.route();
+assert.equal(d.querySelectorAll('.home-topic.is-complete').length,7);
+assert.equal(d.querySelectorAll('.section.is-complete').length,2);
+w.localStorage.clear();w.dispatchEvent(new w.StorageEvent('storage',{key:'cm1-best'}));
+assert.equal(d.querySelectorAll('.is-complete').length,0);
+w.localStorage.setItem('cm1-best','invalid-json');api.route();assert.equal(d.querySelectorAll('.is-complete').length,0);
 assert.equal(api.shuffle([1,2,3]).length,3);
 console.log('Passed: 16 complete games; topic navigation; correct and incorrect answers; first-try scoring; matching; results; replay; invalid-route fallback.');
 dom.window.close();
