@@ -9,7 +9,7 @@ const placeGames=GAMES.filter(g=>g.topic==='place');assert.equal(placeGames.leng
 for(const g of placeGames){for(const q of g.questions){assert(q.visual.startsWith('position:'));assert(![q.prompt,q.answer,...q.choices].some(text=>/\bnear\b|\bmap\b/i.test(text)));}}
 const {JSDOM}=require('jsdom');
 const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://cm1.example/',runScripts:'outside-only'});
-const w=dom.window;w.scrollTo=()=>{};w.eval(fs.readFileSync('data.js','utf8')+'\n'+fs.readFileSync('app.js','utf8')+'\nwindow.testAPI={GAMES,TOPICS,getState:()=>state,route,shuffle};');
+const w=dom.window;w.scrollTo=()=>{};w.eval(fs.readFileSync('student-roster.js','utf8')+'\n'+fs.readFileSync('data.js','utf8')+'\n'+fs.readFileSync('app.js','utf8')+'\nwindow.testAPI={GAMES,TOPICS,getState:()=>state,route,shuffle};');
 const submitted=[];w.ResultsAPI={submit:async record=>{submitted.push(record);}};
 const d=w.document,api=w.testAPI;
 assert.equal(d.querySelectorAll('.topic').length,7);
@@ -36,15 +36,15 @@ for(let n=0;n<g.questions.length;n++){const q=api.getState().questions[n],button
 }
 assert(d.querySelector('.result'),g.id+' result');assert.equal(api.getState().score,g.questions.length-(g.type==='match'?0:1));const form=d.querySelector('.completion-form');assert(form,g.id+' completion form');
 assert.deepEqual([...form.elements.class_section.options].map(o=>o.value),['','CM1 A','CM1 D']);
-form.elements.student_name.value='   ';form.elements.class_section.value='CM1 A';form.dispatchEvent(new w.Event('submit',{cancelable:true}));assert.equal(form.elements.student_name.validationMessage,'Please enter your name.');
-form.elements.student_name.value='<Reem & student>';form.elements.student_name.dispatchEvent(new w.Event('input'));form.elements.class_section.value='CM1 D';form.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));
-const record=submitted.at(-1);assert.equal(record.student_name,'<Reem & student>');assert.equal(record.class_section,'CM1 D');assert.equal(record.exercise,g.title);assert.equal(record.game,'CM1 · '+TOPICS.find(t=>t.id===g.topic).title);assert.equal(record.score,api.getState().score);assert.equal(record.total,g.questions.length);assert.equal(form.querySelector('button').disabled,true);
+form.elements.student_name.value='   ';form.elements.class_section.value='CM1 A';form.dispatchEvent(new w.Event('submit',{cancelable:true}));assert.equal(form.elements.student_name.validationMessage,'Please choose your class and your registered name.');
+form.elements.class_section.value='CM1 D';form.elements.class_section.dispatchEvent(new w.Event('change'));form.elements.student_name.value='Zoe';form.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));
+const record=submitted.at(-1);assert.equal(record.student_name,'Zoe');assert.equal(record.class_section,'CM1 D');assert.equal(record.exercise,g.title);assert.equal(record.game,'CM1 · '+TOPICS.find(t=>t.id===g.topic).title);assert.equal(record.score,api.getState().score);assert.equal(record.total,g.questions.length);assert.equal(form.querySelector('button').disabled,true);
 d.querySelector('#replay').click();assert.equal(api.getState().score,0);assert.equal(api.getState().index,0);
 }
 w.history.replaceState(null,'','#'+('game/match').replace(/^#/,''));api.route();d.querySelector('[data-side="left"][data-key="0"]').click();d.querySelector('[data-side="right"][data-key="1"]').click();assert.match(d.querySelector('.feedback').textContent,/Try again!/);d.querySelector('[data-side="left"][data-key="0"]').click();d.querySelector('[data-side="right"][data-key="0"]').click();assert.equal(api.getState().score,0);assert.equal(api.getState().pairs,1);
 w.history.replaceState(null,'','#'+('game/not-a-game').replace(/^#/,''));api.route();assert.equal(d.querySelectorAll('.section').length,2);
 w.localStorage.clear();w.history.replaceState(null,'','#'+('game/sentence-ending').replace(/^#/,''));api.route();const punctuationGame=api.getState().game;for(let n=0;n<punctuationGame.questions.length;n++){const q=api.getState().questions[n];d.querySelectorAll('[data-answer]').forEach(b=>{if(b.dataset.answer===q.answer)b.click();});d.querySelector('#next').click();}
-const failingForm=d.querySelector('.completion-form');failingForm.elements.student_name.value='Test';failingForm.elements.class_section.value='CM1 A';let failedRecord;w.ResultsAPI.submit=async record=>{failedRecord=record;throw new Error('Network unavailable')};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.match(d.querySelector('.submission-status').textContent,/could not be confirmed/);assert.equal(failingForm.querySelector('button').disabled,false);assert.equal(failingForm.elements.student_name.disabled,true);let retryRecord;w.ResultsAPI.submit=async record=>{retryRecord=record};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.equal(retryRecord,failedRecord);assert.match(d.querySelector('.submission-status').textContent,/sent to your teacher/);assert.equal(w.localStorage.getItem('cm1-results'),null);
+const failingForm=d.querySelector('.completion-form');failingForm.elements.class_section.value='CM1 A';failingForm.elements.class_section.dispatchEvent(new w.Event('change'));failingForm.elements.student_name.value='Ismail';let failedRecord;w.ResultsAPI.submit=async record=>{failedRecord=record;throw new Error('Network unavailable')};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.match(d.querySelector('.submission-status').textContent,/could not be confirmed/);assert.equal(failingForm.querySelector('button').disabled,false);assert.equal(failingForm.elements.student_name.disabled,true);let retryRecord;w.ResultsAPI.submit=async record=>{retryRecord=record};failingForm.dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(resolve=>setTimeout(resolve,0));assert.equal(retryRecord,failedRecord);assert.match(d.querySelector('.submission-status').textContent,/sent to your teacher/);assert.equal(w.localStorage.getItem('cm1-results'),null);
 // Historical scores must restore checks, including a zero score after finishing.
 w.localStorage.setItem('cm1-best',JSON.stringify({[GAMES[0].id]:{score:0,total:GAMES[0].questions.length}}));
 w.history.replaceState(null,'','#topic/'+GAMES[0].topic);api.route();
@@ -68,3 +68,4 @@ console.log('Passed: 16 complete games; topic navigation; correct and incorrect 
 dom.window.close();
 
 })().catch(error=>{console.error(error);process.exitCode=1;});
+

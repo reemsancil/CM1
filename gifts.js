@@ -1,5 +1,6 @@
 (() => {
  const dialog=document.querySelector('#giftsDialog'),form=document.querySelector('#giftLookup'),status=document.querySelector('#giftStatus'),list=document.querySelector('#giftList'),certificate=document.querySelector('#certificate');
+ StudentRoster.bind(form, 'gift_name', 'gift_section');
  let mode='gifts',identity=null,awards=[],generation=0;
  function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const layer=document.createElement('div');layer.className='confetti';layer.setAttribute('aria-hidden','true');for(let i=0;i<65;i++){const bit=document.createElement('i');bit.style.setProperty('--x',Math.random()*100+'vw');bit.style.setProperty('--delay',Math.random()*.5+'s');bit.style.setProperty('--spin',Math.random()*720+'deg');bit.style.background=['#ffd55b','#6655c7','#df6d42','#46b890','#ed89b6'][i%5];layer.append(bit);}dialog.append(layer);setTimeout(()=>layer.remove(),3500);}
  function render(){list.replaceChildren();certificate.hidden=true;const available=awards.filter(a=>mode==='gifts'?!a.opened_at:!!a.opened_at);status.textContent=available.length?(mode==='gifts'?'🎁 Gift from Mrs. Reem! Click your gift to open it.':'Your certificate collection'):(mode==='gifts'?'No new gifts yet. Any gift from Mrs. Reem will appear here.':'Your certificates will appear here after you open a gift.');for(const award of available){const b=document.createElement('button');b.className='gift-card';b.textContent=mode==='gifts'?'🎁 Open your Unit 1 gift':'🏅 Unit 1 certificate';b.onclick=async()=>{const run=generation;b.disabled=true;try{let current=award;if(!award.opened_at){current=await ResultsAPI.openGift(identity.name,identity.section,award.id);if(run!==generation)return;awards=awards.map(a=>a.id===current.id?current:a);}showCertificate(current);}catch{if(run===generation){status.textContent='Could not open your gift. Please try again.';b.disabled=false;}}};list.append(b);}}
@@ -11,3 +12,4 @@
  document.querySelector('#collectionFromGift').onclick=()=>{mode='certificates';document.querySelector('#giftsTitle').textContent='My certificates 🏅';render();};
  document.querySelector('#printCertificate').onclick=()=>window.print();
 })();
+
