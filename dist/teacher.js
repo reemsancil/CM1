@@ -14,6 +14,8 @@
   });
   function clear() {
     generation++;
+    window.TeacherPreview?.clear();
+    const previewStatus=document.querySelector('#preview-status');if(previewStatus)previewStatus.textContent='';
     session = null;
     rows = [];
     sections.replaceChildren();
@@ -153,6 +155,14 @@
     } finally {
       button.disabled = false;
     }
+  });
+  document.querySelector('#preview-directions')?.addEventListener('click',async event=>{
+    const button=event.currentTarget, previewStatus=document.querySelector('#preview-status');
+    const run=generation;
+    button.disabled=true;previewStatus.textContent='Loading teacher preview…';
+    try{await TeacherPreview.open(giftToken);if(run===generation)previewStatus.textContent='';}
+    catch{if(run===generation)previewStatus.textContent='Could not open preview. Check your connection or sign in again, then retry.';}
+    finally{button.disabled=false;}
   });
   refresh.addEventListener('click', load);
   document.querySelector('#sign-out').addEventListener('click', () => {

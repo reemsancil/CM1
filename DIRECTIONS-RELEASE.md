@@ -7,6 +7,10 @@ Prepared activities use vocabulary from Directions.pdf, Directions 2.pdf and Dir
 - Complete the Directions: 10 missing-word questions (reading practice; no audio was supplied).
 - Town Trail: 8 route questions using an original practice map, separate from the worksheet maps.
 
+## Teacher preview
+
+Open `/teacher.html`, sign in with the existing teacher account, and select “Preview directions games.” A Netlify function verifies the teacher session with Supabase before sending any questions. Public visitors and other signed-in users cannot retrieve the preview. Preview scores are not saved or submitted. Closing the preview or signing out clears its frame.
+
 ## Release after teaching
 
 Change `released` to `true` in `directions-settings.json`, run `npm run build`, and commit and push to the existing main branch. Netlify rebuilds the same site. This releases the games to everyone; there is no student unlock code.

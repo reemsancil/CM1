@@ -27,8 +27,11 @@
         <div class="teacher-toolbar">
           <button class="secondary-button" id="refresh-results" type="button">Refresh results</button>
           <button class="primary-button" id="download-csv" type="button" disabled>Download CSV</button>
+          <button class="secondary-button" id="preview-directions" type="button">Preview directions games 🔒</button>
           <button class="secondary-button" id="sign-out" type="button">Sign out</button>
         </div>
+        <p id="preview-status" role="status" aria-live="polite"></p>
+        <section id="directions-preview" hidden><h2>Directions — teacher preview</h2><p>Students still see the locked lesson. Preview scores are not saved or submitted.</p><button id="close-directions-preview" class="secondary-button" type="button">Close preview</button><iframe id="directions-preview-frame" title="Directions games teacher preview" sandbox="allow-scripts" style="display:block;width:100%;height:850px;border:1px solid #c7d6c5;margin-top:1rem"></iframe></section>
         <p id="gift-teacher-status" role="status" aria-live="polite"></p><div id="section-results"></div>
       </div>
     </div>
@@ -36,7 +39,7 @@
 </main>
 <script src="results-api.js"></script>
 <script src="data.js"></script>
-<script src="gift-config.js"></script><script src="unit-progress.js"></script><script src="teacher-gifts.js"></script><script src="teacher.js"></script>
+<script src="gift-config.js"></script><script src="unit-progress.js"></script><script src="teacher-gifts.js"></script><script src="teacher-preview.js"></script><script src="teacher.js"></script>
 </body>
 </html>
 

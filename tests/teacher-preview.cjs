@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const {handler}=require('../netlify/functions/directions-preview.js');
+(async()=>{
+ let calls=0;
+ global.fetch=async()=>{calls++;return {ok:true,json:async()=>({id:'eb3a0fce-6c14-48df-bdd5-0b1bcdbee4c9'})};};
+ const event={httpMethod:'GET',headers:{}};
+ assert.equal((await handler(event)).statusCode,401);assert.equal(calls,0);
+ assert.equal((await handler({...event,httpMethod:'POST'})).statusCode,405);
+ const auth={...event,headers:{authorization:'Bearer test-token'}};
+ let response=await handler(auth);
+ assert.equal(response.statusCode,200);assert.match(JSON.parse(response.body).script,/directions-signs/);
+ assert.match(response.headers['Cache-Control'],/no-store/);
+ global.fetch=async()=>({ok:true,json:async()=>({id:'another-user'})});
+ response=await handler(auth);assert.equal(response.statusCode,403);assert(!response.body.includes('questions'));
+ global.fetch=async()=>({ok:false,status:401});
+ assert.equal((await handler(auth)).statusCode,401);
+ global.fetch=async()=>{throw new Error('offline')};
+ assert.equal((await handler(auth)).statusCode,503);
+ console.log('Passed: server-side teacher verification, anonymous and other-user denial, revoked sessions, no-store and fail-closed errors.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
